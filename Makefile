@@ -44,6 +44,18 @@ x64:
 	cd ${TARGET}; cros_sdk -- ./build_packages --board=${BOARD_X64} --nowithdebug
 	cd ${TARGET}; cros_sdk -- ./build_image --board=${BOARD_X64} --noenable_rootfs_verification dev
 
+kvm: armk x86k x64k
+armk:
+	cd ${TARGET}; cros_sdk -- ./image_to_vm.sh --board=${BOARD_ARM}
+
+x86k:
+	cd ${TARGET}; cros_sdk -- ./image_to_vm.sh --board=${BOARD_X86}
+
+x64k:
+	cd ${TARGET}; cros_sdk -- ./image_to_vm.sh --board=${BOARD_X64}
+
+
+
 clean: FORCE
 	cd ${TARGET}; cros_sdk --delete
 
