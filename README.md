@@ -2,7 +2,7 @@
 A tool to build Chrome OS easily
 
 ## Prerequisites
-There are several [here](https://www.chromium.org/chromium-os/developer-guide).
+Prerequisites are described [here](https://www.chromium.org/chromium-os/developer-guide).
 
 I'll list them for the ease.  **Bold** means new or different prerequisities from above public.  I noticed them through my experience.
 
@@ -36,3 +36,7 @@ $ make arm | x86 | x64
 
 ## Releases
 You can download pre-compiled image through [release page](https://github.com/jam7/chromeos-build/releases)
+
+## References
+[a list of released chromebook](https://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices)
+[developer guide](https://www.chromium.org/chromium-os/developer-guide)
