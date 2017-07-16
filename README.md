@@ -34,6 +34,16 @@ You can create images for architecures you need only by following command.
 $ make arm | x86 | x64
 ```
 
+## How to convert raw image to qcow2 image
+
+```
+$ qemu-img convert -f raw -O qcow2 chromiumos_qemu_image-R55-8872.76-amd64-generic.img chromiumos_qemu_image-R55-8872.76-amd64-generic.qcow2
+```
+
+## How to run Chromium OS on KVM
+
+Create VM using GUI manager.  It is required to use **cirrius** VGA.
+
 ## Releases
 You can download pre-compiled image through [release page](https://github.com/jam7/chromeos-build/releases)
 
