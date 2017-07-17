@@ -4,12 +4,12 @@ A tool to build Chrome OS easily
 ## Prerequisites
 Prerequisites are described [here](https://www.chromium.org/chromium-os/developer-guide).
 
-I'll list them for the ease.  **Bold** means new or different prerequisities from above public.  I noticed them through my experience.
+I'll list them for the ease.  **Bold** means new or different prerequisities from above.  I noticed them through my experience.
 
 - ubuntu **16.04 works**
 - x86_64 64 bit system
 - an account with sudo access
-- **4~16** GB RAM for arm and x86.  **16~32** GB RAM for amd64.  (This means I could not compile it correctly with smaller number of RAM but could with larger number of RAM)
+- **4~16** GB RAM for arm and x86.  **16~32** GB RAM for amd64.  (Values mean I could not compile it correctly with smaller number of RAM but could with larger number of RAM)
 - git and curl
 - configure git
 - tweak sudoers for **400** minutes (My machine takes more than 180 min for compilation)
@@ -56,7 +56,7 @@ Create VM using GUI manager.  It is required to use **cirrius** VGA.  At this ti
 
 ## How to set chronos password
 
-First, you need to switch to console by typing `CTRL`+`ALT`+`F2`.  Type `chronos` as a user.  You can login and sudo without password here.
+Push `CTRL`+`ALT`+`F2`.  Type `chronos` as a user.  You may need to enter `chronos` as password also.
 
 ```
 $ sudo mount -o remount,rw /
@@ -73,21 +73,32 @@ After updating UNIX password, you can ssh to Chromium OS.
 
 ## How to set google API keys
 
-First, you need to retrieve your own API keys from https://www.chromium.org/developers/how-tos/api-keys.  Then, you can update Chromium OS like below.
+You need to retrieve your own API keys from https://www.chromium.org/developers/how-tos/api-keys.  Then, you can update Chromium OS like below.
 
 ```
 $ sudo mount -o remount,rw /
 $ sudo vi /etc/chrome_dev.conf
+# append at the bottom below
 GOOGLE_API_KEY=your_api_key
 GOOGLE_DEFAULT_CLIENT_ID=your_client_id
 GOOGLE_DEFAULT_CLIENT_SECRET=your_client_secret
 ```
 
-Now, you need to reboot Chromium OS once.  Type `CTRL`+`ALT`+`F1` to switch to GUI screen and click `Shut down` button.
+Now, you need to reboot Chromium OS once.  Push `CTRL`+`ALT`+`F1` to switch back to GUI and click `Shut down` button.
+
+## How to disable suspend
+
+```
+$ sudo bash -c 'echo 1 >/var/lib/power_manager/disable_idle_suspend'
+$ sudo chown power:power /var/lib/power_manager/disable_idle_suspend
+$ sudo restart powerd
+```
 
 ## Releases
 You can download pre-compiled image through [release page](https://github.com/jam7/chromeos-build/releases)
 
 ## References
-[a list of released chromebook](https://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices)
-[developer guide](https://www.chromium.org/chromium-os/developer-guide)
+[a list of released chromebook](https://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices)  
+[developer guide](https://www.chromium.org/chromium-os/developer-guide)  
+[Running a Chromium OS image under KVM](https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/running-chromeos-image-under-virtual-machines)  
+[Power manager overrides](https://github.com/dnschneid/crouton/wiki/Power-manager-overrides)  
