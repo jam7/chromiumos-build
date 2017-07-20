@@ -1,0 +1,32 @@
+--- ./chromiumos/src/scripts/update_bootloaders.sh.orig	2017-01-11 23:27:33.257545571 +0900
++++ ./chromiumos/src/scripts/update_bootloaders.sh	2017-07-18 01:02:26.273755130 +0900
+@@ -141,6 +141,7 @@
+ fi
+ 
+ ESP_FS_DIR=$(mktemp -d /tmp/esp.XXXXXX)
++ESP_LOOP_COPY=$(mktemp /tmp/esp-loop-copy.XXXXXX)
+ cleanup() {
+   set +e
+   if ! safe_umount "${ESP_FS_DIR}"; then
+@@ -155,6 +156,7 @@
+     sudo losetup -d  "${ESP_DEV}"
+   fi
+   rm -rf "${ESP_FS_DIR}"
++  rm -f "${ESP_LOOP_COPY}"
+ }
+ trap cleanup EXIT
+ sudo mount "${ESP_DEV}" "${ESP_FS_DIR}"
+@@ -193,7 +195,12 @@
+   # we cut over from rootfs booting (extlinux).
+   if [[ ${FLAGS_install_syslinux} -eq ${FLAGS_TRUE} ]]; then
+     safe_umount "${ESP_FS_DIR}"
+-    sudo syslinux -d /syslinux "${ESP_DEV}"
++    # We cannot syslinux ESP_DEV directly because of a race condition with udev,
++    # see http://crbug.com/508713
++    sudo dd if="${ESP_DEV}" of="${ESP_LOOP_COPY}" status=none
++    sudo syslinux -d /syslinux "${ESP_LOOP_COPY}"
++    sudo flock --wait 10 -x "${ESP_DEV}" \
++      dd if="${ESP_LOOP_COPY}" of="${ESP_DEV}" status=none
+     # mount again for cleanup to free resource gracefully
+     sudo mount -o ro "${ESP_DEV}" "${ESP_FS_DIR}"
+   fi
