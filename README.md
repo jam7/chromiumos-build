@@ -9,20 +9,29 @@ I'll list them for the ease.  **Bold** means new or different prerequisities fro
 - ubuntu **16.04 works**
 - x86_64 64 bit system
 - an account with sudo access
-- **4~16** GB RAM for arm and x86.  **16~32** GB RAM for amd64.  (Values mean I could not compile it correctly with smaller number of RAM but could with larger number of RAM)
+- **16** GB RAM for arm and x86.  **20** GB RAM for amd64.  (For example, amd64 uses gold-linker, but it still uses 12G.  The whole system uses at least 18 GB.)
 - git and curl
 - configure git
 - tweak sudoers for **400** minutes (My machine takes more than 180 min for compilation)
 
-## Setup
+## How to run Chromium OS on KVM
+
+Retrieve one of KVM images.  I recommend [chromiumos_image-R60-9592.63-amd64-generic.bin.xz](https://github.com/jam7/chromeos-build/releases/download/R60/chromiumos_image-R60-9592.63-amd64-generic.bin.xz).
+
+Then, create VM using the image.  It is required to use **cirrius** VGA and **SATA** or **IDE** storage.
+
+You cannot log in from GUI until you register your own google API keys, but it is possible to ssh to Chromium OS with chronos:chronos account.
+
+## How to compile Chromium OS by yourself
+
+### Setup
 Type following command to prepare depo_tools and sources.
 
 ```
 $ make setup
 ```
 
-## Usage
-
+### Compile
 Type following command to create images for all architectures.  This takes a day or more for me.
 
 ```
@@ -42,7 +51,7 @@ $ make kvm
 $ make armk | x86k | x64k
 ```
 
-## How to convert raw image to qcow2 image
+### How to convert raw image to qcow2 image
 
 Convert qemu raw image to qcow2 image if your qemu-manager requires it.
 
