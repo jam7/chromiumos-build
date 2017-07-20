@@ -1,7 +1,17 @@
 # chromeos-build
-A tool to build Chrome OS easily
+Scripts to build Chrome OS easily
 
-## Prerequisites
+## How to run Chromium OS on KVM
+
+Retrieve one of KVM images.  I recommend [chromiumos_qemu_image-R60-9592.63-amd64-generic.32GB.qcow2.xz](https://github.com/jam7/chromeos-build/releases/download/R60/chromiumos_qemu_image-R60-9592.63-amd64-generic.32GB.qcow2.xz), 410MB.
+
+Then, create VM using the image.  [Here](https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/running-chromeos-image-under-virtual-machines) has command line for KVM.  If you use GUI manager, plase make sure to use **cirrius** VGA and **SATA** or **IDE** storage device.
+
+You cannot log in from GUI until you register your own google API keys, but it is possible to ssh to Chromium OS with chronos:chronos account.
+
+## How to compile Chromium OS by yourself
+
+### Prerequisites
 Prerequisites are described [here](https://www.chromium.org/chromium-os/developer-guide).
 
 I'll list them for the ease.  **Bold** means new or different prerequisities from above.  I noticed them through my experience.
@@ -13,16 +23,6 @@ I'll list them for the ease.  **Bold** means new or different prerequisities fro
 - git and curl
 - configure git
 - tweak sudoers for **400** minutes (My machine takes more than 180 min for compilation)
-
-## How to run Chromium OS on KVM
-
-Retrieve one of KVM images.  I recommend [chromiumos_image-R60-9592.63-amd64-generic.bin.xz](https://github.com/jam7/chromeos-build/releases/download/R60/chromiumos_image-R60-9592.63-amd64-generic.bin.xz).
-
-Then, create VM using the image.  It is required to use **cirrius** VGA and **SATA** or **IDE** storage.
-
-You cannot log in from GUI until you register your own google API keys, but it is possible to ssh to Chromium OS with chronos:chronos account.
-
-## How to compile Chromium OS by yourself
 
 ### Setup
 Type following command to prepare depo_tools and sources.
@@ -59,11 +59,7 @@ Convert qemu raw image to qcow2 image if your qemu-manager requires it.
 $ qemu-img convert -f raw -O qcow2 chromiumos_qemu_image-R55-8872.76-amd64-generic.img chromiumos_qemu_image-R55-8872.76-amd64-generic.qcow2
 ```
 
-## How to run Chromium OS on KVM
-
-Create VM using GUI manager.  It is required to use **cirrius** VGA.  At this time, you cannot log in from GUI since google API keys are not installed yet.
-
-## How to set chronos password
+## How to change chronos password
 
 Push `CTRL`+`ALT`+`F2`.  Type `chronos` as a user.  You may need to enter `chronos` as password also.
 
@@ -78,11 +74,11 @@ Retype new UNIX password:
 passwd: password updated successfully
 ```
 
-After updating UNIX password, you can ssh to Chromium OS.
+It is required to update UNIX password to log-in through ssh.
 
 ## How to set google API keys
 
-You need to retrieve your own API keys from https://www.chromium.org/developers/how-tos/api-keys.  Then, you can update Chromium OS like below.
+You need to retrieve your own API keys from https://www.chromium.org/developers/how-tos/api-keys.  Then, you can set those API keys into Chromium OS like below.
 
 ```
 $ sudo mount -o remount,rw /
@@ -93,9 +89,9 @@ GOOGLE_DEFAULT_CLIENT_ID=your_client_id
 GOOGLE_DEFAULT_CLIENT_SECRET=your_client_secret
 ```
 
-Now, you need to reboot Chromium OS once.  Push `CTRL`+`ALT`+`F1` to switch back to GUI and click `Shut down` button.
+You need to reboot Chromium OS once.
 
-## How to disable suspend
+## How to disable sleep
 
 ```
 $ sudo bash -c 'echo 1 >/var/lib/power_manager/disable_idle_suspend'
